@@ -2,7 +2,7 @@
   "name": "silver-thread-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "node": "^15.4.0"
+    "node": "^15.4.0",
+    "pg": "^8.5.1",
+    "sequelize": "^6.3.5"
   }
 }
