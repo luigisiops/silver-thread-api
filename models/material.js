@@ -14,9 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Material.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    unit_price: DataTypes.INTEGER,
+    material_name: DataTypes.STRING,
+    vendor: DataTypes.STRING,
+    vendor_material_id: DataTypes.STRING,
+    unit: DataTypes.STRING,
+    unit_price: DataTypes.FLOAT,
     category: DataTypes.STRING
   }, {
     sequelize,

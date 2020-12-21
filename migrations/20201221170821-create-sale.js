@@ -11,17 +11,26 @@ module.exports = {
       product_id: {
         type: Sequelize.INTEGER
       },
-      product_num: {
+      product_number: {
+        type: Sequelize.STRING
+      },
+      product_name: {
         type: Sequelize.STRING
       },
       product_category: {
+        type: Sequelize.STRING
+      },
+      price_per_unit: {
         type: Sequelize.STRING
       },
       quantity: {
         type: Sequelize.INTEGER
       },
       total_price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
+      },
+      sold_to: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
