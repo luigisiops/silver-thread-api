@@ -67,5 +67,4 @@ router.delete("/:id/deleteASale", (req, res) => {
    res.send("sale with id" + req.params.id + "deleted")
 })
 
-router.post
 module.exports = router
