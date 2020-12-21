@@ -9,25 +9,23 @@ router.get("/getAllSales", async (req, res) => {
 })
 
 // add new sale
-// need to add req.body stuff but i couldnt figure it out without getting error that the stuff was undefined
 router.post("/addNewSale", async (req, res) => {
    await models.Sale.create({
-      product_id: 12,
-      product_num: 12,
-      product_category: "category",
-      quantity: 12,
-      total_price: 12,
+      product_id: req.body.product_id,
+      product_num: req.body.product_num,
+      product_category: req.body.product_category,
+      quantity: req.body.quantity,
+      total_price: req.body.total_price,
    })
 
    res.send("new sale added")
 })
 
 // delete a sale
-// need to add req.body as well using id stored in the state
 router.delete("/deleteASale", async (req, res) => {
    const deletedSale = await models.Sale.findOne({
       where: {
-         id: 3,
+         id: req.body.id,
       },
    })
    await deletedSale.destroy()
