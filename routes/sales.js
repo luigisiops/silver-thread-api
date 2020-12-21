@@ -31,7 +31,7 @@ router.delete("/deleteASale", async (req, res) => {
       },
    })
    await deletedSale.destroy()
-   res.send("sale destroyed")
+   res.send("sale deleted")
 })
 
 router.post
