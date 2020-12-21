@@ -11,7 +11,7 @@ router.get("/getAllSales", async (req, res) => {
 // add new sale
 // need to add req.body stuff but i couldnt figure it out without getting error that the stuff was undefined
 router.post("/addNewSale", async (req, res) => {
-   let newSale = await models.Sale.create({
+   await models.Sale.create({
       product_id: 12,
       product_num: 12,
       product_category: "category",
