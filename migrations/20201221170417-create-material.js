@@ -8,14 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      material_name: {
         type: Sequelize.STRING
       },
-      description: {
+      vendor: {
+        type: Sequelize.STRING
+      },
+      vendor_material_id: {
+        type: Sequelize.STRING
+      },
+      unit: {
         type: Sequelize.STRING
       },
       unit_price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       category: {
         type: Sequelize.STRING
