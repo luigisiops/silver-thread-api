@@ -59,12 +59,15 @@ router.put("/:id/updateASale", async (req, res) => {
 
 // delete a sale
 router.delete("/:id/deleteASale", (req, res) => {
+   const id = req.params.id
    models.Sale.destroy({
       where: {
-         id: req.params.id,
+         id: id
       },
+   }).then(() => {
+      res.status(200).json({ success: true, updatedSale: id, })
    })
-   res.send("sale with id" + req.params.id + "deleted")
+   
 })
 
 module.exports = router
