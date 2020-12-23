@@ -30,17 +30,10 @@ router.post('/materials', (req,res) => {
         category: category    
     })
     // Saving material object to the Material Database
-    material.save().then((savedMaterial) => {
-        console.log(material)
-        res.redirect('/materials')
+    material.save().then((savedMaterial) => {              
+        res.status(200).json(savedMaterial);
     })
 })
-
-router.get("/delete-material", (req, res) => {
-    models.Material.findAll().then((materials) => {
-      res.status(200).json(materials);
-  });
-  });
 
 router.delete('/delete-material',(req,res) => {
     const id = req.body.id
