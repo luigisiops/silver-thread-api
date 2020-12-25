@@ -18,6 +18,7 @@ router.post('/products', (req,res) => {
     const wholesale = req.body.wholesale
     const retail_price = req.body.retail_price
     const quantity = req.body.quantity
+    const category = req.body.category
     
     //Building product object:
     
@@ -27,7 +28,8 @@ router.post('/products', (req,res) => {
         labor: labor,
         wholesale: wholesale,
         retail_price: retail_price,
-        quantity: quantity    
+        quantity: quantity,
+        category: category    
     })
     // Saving product object to the Product Database
     product.save().then((savedProduct) => {
@@ -69,6 +71,8 @@ router.patch('/edit-product', (req,res) => {
   const cost_plus_markup = req.body.cost_plus_markup
   const retail_price = req.body.retail_price
   const quantity = req.body.quantity
+  const category = req.body.category
+
 
   models.Product.update({
     product_name: product_name,
@@ -77,7 +81,8 @@ router.patch('/edit-product', (req,res) => {
     wholesale: wholesale,
     cost_plus_markup: cost_plus_markup,
     retail_price: retail_price,
-    quantity: quantity 
+    quantity: quantity,
+    category: category 
   }, {
       where: {
           id: id
