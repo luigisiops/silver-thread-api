@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       material_cost: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       createdAt: {
         allowNull: false,
