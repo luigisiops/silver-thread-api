@@ -11,9 +11,6 @@ module.exports = {
       product_name: {
         type: Sequelize.STRING
       },
-      product_number: {
-        type: Sequelize.STRING
-      },
       labor: {
         type: Sequelize.INTEGER
       },
@@ -25,6 +22,9 @@ module.exports = {
       },
       quantity: {
         type: Sequelize.INTEGER
+      },
+      category: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
