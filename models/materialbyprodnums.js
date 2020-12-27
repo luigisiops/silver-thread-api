@@ -11,6 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      const MaterialByProdNums = sequelize.define('MaterialByProdNums', {
+          id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+          allowNull: false
+      }
+      });
+      Product.belongsToMany(Material, { through: MaterialByProdNums });
+      Material.belongsToMany(Product, { through: MaterialByProdNums });
+      MaterialByProdNums.belongsTo(Product);
+      MaterialByProdNums.belongsTo(Material);
+      Product.hasMany(MaterialByProdNums);
+      Material.hasMany(MaterialByProdNums);
     }
   };
   MaterialByProdNums.init({
