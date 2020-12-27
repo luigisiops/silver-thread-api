@@ -9,10 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       product_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER, references: {model: 'Products', field: 'id'}
       },
       material_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER, references: {model: 'Materials', field: 'id'}
       },
       material_name: {
         type: Sequelize.STRING

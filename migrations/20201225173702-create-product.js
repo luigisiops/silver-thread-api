@@ -6,7 +6,8 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        // references: {model: 'MaterialByProdNums', field: 'product_id'}
       },
       product_name: {
         type: Sequelize.STRING
