@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Material.hasMany(models.MaterialByProdNums, { foreignKey: "material_id" })
-      models.Material.belongsTo(models.Product)
+      models.Material.hasMany(models.MaterialByProdNums, {onDelete: 'cascade', hooks:true})
+      // models.Material.belongsTo(models.Product)
     }
   };
   Material.init({
