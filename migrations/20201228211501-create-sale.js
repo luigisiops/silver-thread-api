@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       price_per_unit: {
-        type: Sequelize.STRING
+        type: Sequelize.FLOAT
       },
       quantity: {
         type: Sequelize.INTEGER
@@ -31,6 +31,9 @@ module.exports = {
       },
       sold_to: {
         type: Sequelize.STRING
+      },
+      date_sold: {
+        type: Sequelize.DATEONLY
       },
       createdAt: {
         allowNull: false,

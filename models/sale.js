@@ -18,10 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     product_number: DataTypes.STRING,
     product_name: DataTypes.STRING,
     product_category: DataTypes.STRING,
-    price_per_unit: DataTypes.STRING,
+    price_per_unit: DataTypes.FLOAT,
     quantity: DataTypes.INTEGER,
     total_price: DataTypes.FLOAT,
-    sold_to: DataTypes.STRING
+    sold_to: DataTypes.STRING,
+    date_sold: DataTypes.DATEONLY
   }, {
     sequelize,
     modelName: 'Sale',
