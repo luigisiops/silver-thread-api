@@ -14,7 +14,7 @@ router.get("/products", (req, res) => {
 router.post('/products', async (req, res) => {
 
   const product_name = req.body.product_name
-  const product_number = req.body.product_number
+  const product_num = req.body.product_num
   const labor = req.body.labor
   const retail_price = req.body.retail_price
   const quantity = req.body.quantity
@@ -27,7 +27,7 @@ router.post('/products', async (req, res) => {
 
   let product = models.Product.build({
     product_name: product_name,
-    product_number: product_number,
+    product_num: product_num,
     labor: labor,
     wholesale: wholesale,
     retail_price: retail_price,
@@ -132,7 +132,7 @@ router.patch('/edit-product', (req, res) => {
   const id = req.body.id
 
   const product_name = req.body.product_name
-  const product_number = req.body.product_number
+  const product_num = req.body.product_num
   const labor = req.body.labor
   const wholesale = req.body.wholesale
   const cost_plus_markup = req.body.cost_plus_markup
@@ -143,7 +143,7 @@ router.patch('/edit-product', (req, res) => {
 
   models.Product.update({
     product_name: product_name,
-    product_number: product_number,
+    product_num: product_num,
     labor: labor,
     wholesale: wholesale,
     cost_plus_markup: cost_plus_markup,
