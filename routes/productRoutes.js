@@ -3,7 +3,6 @@ const router = express.Router();
 const models = require("../models");
 
 
-
 router.get("/products", (req, res) => {
   models.Product.findAll().then((products) => {
     res.status(200).json(products);
@@ -88,16 +87,16 @@ const addToMaterialsByProductNumber = (id, materials) => {
   //build materials object
   let addMaterials = materials.map(item => {
     return {
-      product_id: id,
-      material_id: item.material_id,
+      product_id: parseInt(id),
+      material_id: parseInt(item.material_id),
       material_name: item.material_name,
-      material_unit_amount: item.material_unit_amount,
+      material_unit_amount: parseInt(item.material_unit_amount),
       material_cost: (item.material_unit_amount * item.unit_price)
     }
   })
 
   //add all to material by product number table
-  models.MaterialByProdNums.bulkCreate(addMaterials, { returning: true })
+  models.MaterialByProdNums.bulkCreate(addMaterials, { returning: false })
     .then((savedAddMaterials) => {
       console.log('saved material by product')
     })

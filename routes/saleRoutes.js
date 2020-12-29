@@ -1,15 +1,26 @@
 const express = require("express")
 const router = express.Router()
 const models = require("../models")
+const { Op } = require('sequelize')
 
 // get all sales
-router.get("/getAllSales", async (req, res) => {
-   let sales = await models.Sale.findAll({})
+router.get("/getAllSales/:start/:end", async (req, res) => {
+   let start = req.params.start
+   let end = req.params.end
+
+   let sales = await models.Sale.findAll({
+      where: {
+         date_sold: {
+            [Op.between]: [start, end]
+         }
+      }
+   })
    res.send(sales)
 })
 
 // add new sale
 router.post("/addNewSale", async (req, res) => {
+   
    await models.Sale.create({
       product_id: req.body.product_id,
       product_number: req.body.product_number,
@@ -19,6 +30,7 @@ router.post("/addNewSale", async (req, res) => {
       quantity: req.body.quantity,
       total_price: req.body.total_price,
       sold_to: req.body.sold_to,
+      date_sold: req.body.date_sold
    })
 
    res.send("new sale added")
@@ -67,7 +79,7 @@ router.delete("/:id/deleteASale", (req, res) => {
    }).then(() => {
       res.status(200).json({ success: true, updatedSale: id, })
    })
-   
+
 })
 
 module.exports = router
