@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     quantity: DataTypes.INTEGER,
     total_price: DataTypes.FLOAT,
     sold_to: DataTypes.STRING,
-    date_sold: DataTypes.DATEONLY
+    date_sold: DataTypes.DATEONLY,
+    discount: DataTypes.FLOAT,
+    tax: DataTypes.FLOAT,
+    shipping: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'Sale',
