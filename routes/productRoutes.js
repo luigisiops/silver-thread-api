@@ -53,7 +53,7 @@ const calculateWholesaleCosts = (labor, materialList) => {
   //labor in minutes (user input) * cost per minute
   let laborCost = (labor * laborPerMinute)
 
-  if (materialList.length >= 1) {  
+  if (materialList.length >= 1) {
 
     //get list of extended costs
     let materialPriceList = materialList.map(item => {
@@ -72,7 +72,7 @@ const calculateWholesaleCosts = (labor, materialList) => {
     let totalWholesaleCosts = (costs * 1.1).toFixed(2)
 
     return totalWholesaleCosts
-    
+
   } else {
     let laborMarkup = (laborCost * 1.1).toFixed(2)
 
@@ -103,23 +103,45 @@ const addToMaterialsByProductNumber = (id, materials) => {
 
 }
 
-router.get("/delete-product", (req, res) => {
-  models.Product.findAll().then((products) => {
-    res.status(200).json(products);
-  });
-});
 
-router.delete('/delete-product', (req, res) => {
+// router.get("/delete-product", (req, res) => {
+//   models.Product.findAll().then((products) => {
+//     res.status(200).json(products);
+//   });
+// });
+
+router.delete('/delete-product', async (req, res) => {
   const id = req.body.id
 
-  models.Product.destroy({
+  let result = await deleteMaterialByProductNum(id)
+
+    models.Product.destroy({
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(200).json({ success: true, deletedProduct: id });
+    }).catch(() => {
+      res.status(500).json({ success: false, message: 'error deleting product'})
+    })
+  
+})
+
+const deleteMaterialByProductNum = async (id) => {
+  let product_id = id
+
+  await models.MaterialByProdNums.destroy({
     where: {
-      id: id
+      product_id: product_id
     }
   }).then(() => {
-    res.status(200).json({ success: true, deletedProduct: id });
+    return true
+  }).catch(() => {
+    return false
   })
-})
+
+}
+
 
 router.get("/edit-product", (req, res) => {
   models.Product.findAll().then((products) => {
