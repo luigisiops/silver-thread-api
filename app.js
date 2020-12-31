@@ -6,10 +6,27 @@ const router = express.Router()
 const cors = require("cors")
 const models = require("./models")
 
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
+
+app.use(
+   session({
+      key:"userId",
+      secret: "subscribe",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+         expires: 60 * 60 * 24
+      }
+   })
+)
+
 
 // routes
 const loginRouter = require("./routes/loginRoutes")

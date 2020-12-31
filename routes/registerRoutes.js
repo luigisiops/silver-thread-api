@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     let username = req.body.username
     let password = req.body.password
 
-    let user = await models.findOne({
+    let user = await models.User.findOne({
         where: {
             username: username
         }
@@ -33,17 +33,15 @@ router.post("/", async (req, res) => {
         else {
             const salt = bcrypt.genSaltSync(saltRounds)
             const hash = bcrypt.hashSync(password, salt)
-            let temp = { password: hash }
-            console.log({ password: hash })
+  
+            let newUser = await models.User.create({
+                first_name: firstname,
+                last_name: lastname,
+                username: username,
+                password: hash
+        })
 
-            /*let newUser = await models.User.create({
-            firstname: firstname,
-            lastname: lastname,
-            username: username,
-            password: hash
-        })*/
-
-            res.send(temp)
+            res.send(newUser)
         }
 
     }

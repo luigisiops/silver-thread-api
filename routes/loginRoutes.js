@@ -10,21 +10,21 @@ const jwt = require('jsonwebtoken');
 const { verify } = require("crypto");
 // get all materialByProdNum
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     let username = req.body.username
     let password = req.body.password
 
-    let user = await models.findOne({
+    let user = await models.User.findOne({
         where: {
             username: username
         }
     })
-
+    console.log(user.dataValues.password)
     if (user.length > 0) {
         res.send(`user: ${username} does not exist`)
     }
     else {
-        bcrypt.compare(password, user.password, (error, response) => {
+        bcrypt.compare(password, user.dataValues.password, (error, response) => {
             if (response) {
                 req.session.user = user;
                 console.log(req.session.user)
