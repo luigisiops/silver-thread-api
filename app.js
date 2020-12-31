@@ -12,8 +12,15 @@ app.use(express.json())
 app.use(cors())
 
 // routes
+const loginRouter = require("./routes/loginRoutes")
+app.use("/login", loginRouter)
+
+const registerRouter = require("./routes/registerRoutes")
+app.use("/register", registerRouter)
+
 const salesRouter = require("./routes/saleRoutes")
 app.use("/sales", salesRouter)
+
 const materialByProdNumsRouter = require("./routes/materialByProdNumsRoutes")
 app.use("/materialByProdNums", materialByProdNumsRouter) 
 
