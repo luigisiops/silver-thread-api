@@ -37,6 +37,7 @@ router.post('/materials', (req,res) => {
 
 router.delete('/delete-material',(req,res) => {
     const id = req.body.id
+    console.log(id)
 
     models.Material.destroy ({
         where: {
@@ -47,11 +48,11 @@ router.delete('/delete-material',(req,res) => {
     })
 })
 
-router.get("/edit-material", (req, res) => {
-    models.Material.findAll().then((materials) => {
-      res.status(200).json(materials);
-  });
-  });
+// router.get("/edit-material", (req, res) => {
+//     models.Material.findAll().then((materials) => {
+//       res.status(200).json(materials);
+//   });
+//   });
 
 router.patch('/edit-material', (req,res) => {
     const id = req.body.id
