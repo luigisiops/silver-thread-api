@@ -20,10 +20,7 @@ router.post("/", async (req, res) => {
         }
     })
     console.log(user.dataValues.password)
-    if (user.length > 0) {
-        res.send(`user: ${username} does not exist`)
-    }
-    else {
+    if (user) {
         bcrypt.compare(password, user.dataValues.password, (error, response) => {
             if (response) {
                 req.session.user = user;
@@ -37,11 +34,14 @@ router.post("/", async (req, res) => {
 
                 res.json({auth: true, token: token, user: user})
             } else {
-                res.send({ message: "Wrong user/password combination" })
+                res.send({ auth: false, message: "Wrong user/password combination" })
             }
-        })
-    }
-})
+    })
+}
+        else {
+            res.send({ auth: false, message: "user does not exist" })
+        }
+    })
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -56,6 +56,7 @@ const verifyJWT = (req, res, next) => {
             }
             else{
                 req.userId = decoded.id
+                next()
             }
         })
     }
