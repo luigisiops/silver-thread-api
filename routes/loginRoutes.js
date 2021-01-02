@@ -50,12 +50,18 @@ const verifyJWT = (req, res, next) => {
         res.send("no token")
     }
     else { 
-        jwt.verify(token, "jwtSecret", (err, decoded) => {
+        jwt.verify(token, "jwtSecret", async (err, decoded) => {
             if(err){
                 res.json({ auth: false, message: "authentication failed"})
             }
             else{
                 req.userId = decoded.id
+
+                req.user = await models.User.findOne({
+                    where: {
+                        id: req.userId
+                    }
+                })
                 next()
             }
         })
@@ -63,7 +69,8 @@ const verifyJWT = (req, res, next) => {
 }
 
 router.get('/isUserAuth', verifyJWT, (req,res) => {
-    res.send("You are authenticated")
+    let user = req.user
+    res.send({message:"You are authenticated", user:user})
 })
 
 router.post
