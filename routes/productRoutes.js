@@ -15,8 +15,6 @@ router.post('/products', async (req, res) => {
   const product_name = req.body.product_name
   const product_num = req.body.product_num
   const labor = req.body.labor
-  const retail_price = req.body.retail_price
-  const quantity = req.body.quantity
   const category = req.body.category
   const materialList = req.body.materials
 
@@ -29,8 +27,6 @@ router.post('/products', async (req, res) => {
     product_num: product_num,
     labor: labor,
     wholesale: wholesale,
-    retail_price: retail_price,
-    quantity: quantity,
     category: category
   })
   // Saving product object to the Product Database
@@ -74,9 +70,14 @@ const calculateWholesaleCosts = (labor, materialList) => {
     return totalWholesaleCosts
 
   } else {
-    let laborMarkup = (laborCost * 1.1).toFixed(2)
-
-    return laborMarkup
+    //client would like a minimum of $3 labor cost for all products
+    if (laborCost <= 3) {
+      let laborMarkup = (3 * 1.1).toFixed(2)
+      return laborMarkup
+    } else {
+      let laborMarkup = (laborCost * 1.1).toFixed(2)
+      return laborMarkup
+    }
   }
 
 }
@@ -113,18 +114,17 @@ const addToMaterialsByProductNumber = (id, materials) => {
 router.delete('/delete-product', async (req, res) => {
   const id = req.body.id
 
-  let result = await deleteMaterialByProductNum(id)
+  await deleteMaterialByProductNum(id)
 
-    models.Product.destroy({
-      where: {
-        id: id
-      }
-    }).then(() => {
-      res.status(200).json({ success: true, deletedProduct: id });
-    }).catch(() => {
-      res.status(500).json({ success: false, message: 'error deleting product'})
-    })
-  
+  await models.Product.destroy({
+    where: {
+      id: id
+    }
+  }).then(() => {
+    res.status(200).json({ success: true, deletedProduct: id });
+  }).catch(() => {
+    res.status(500).json({ success: false, message: 'error deleting product' })
+  })
 })
 
 const deleteMaterialByProductNum = async (id) => {
@@ -160,7 +160,7 @@ router.patch('/edit-product', (req, res) => {
   const retail_price = req.body.retail_price
   const quantity = req.body.quantity
   const category = req.body.category
-
+  const quantity_painted_tree = req.body.quantity_painted_tree
 
   models.Product.update({
     product_name: product_name,
@@ -170,6 +170,7 @@ router.patch('/edit-product', (req, res) => {
     cost_plus_markup: cost_plus_markup,
     retail_price: retail_price,
     quantity: quantity,
+    quantity_painted_tree: quantity_painted_tree,
     category: category
   }, {
     where: {
