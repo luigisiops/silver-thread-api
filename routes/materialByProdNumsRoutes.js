@@ -21,7 +21,6 @@ router.post('/add-material', (req, res) => {
    material.save().then((savedMaterial) => {
       res.status(200).json(savedMaterial);
    })
-
 })
 
 router.delete("/delete/:id", (req, res) => {
