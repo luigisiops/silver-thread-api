@@ -33,9 +33,10 @@ router.post("/addNewSale", async (req, res) => {
       discount: req.body.discount,
       tax: req.body.tax,
       shipping: req.body.shipping,
+  
+   }).then((savedSale) => {
+      res.json(savedSale)
    })
-
-   res.send("new sale added")
 })
 
 // update sale
@@ -73,8 +74,8 @@ router.put("/:id/updateASale", async (req, res) => {
             id: id,
          },
       }
-   ).then(() => {
-      res.status(200).json({ success: true, updatedSale: id })
+   ).then((updatedSale) => {
+      res.status(200).json({ success: true, updatedSale: updatedSale})
    })
 })
 
