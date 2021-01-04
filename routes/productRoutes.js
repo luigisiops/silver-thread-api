@@ -117,8 +117,8 @@ router.patch('/edit-product', async (req, res) => {
     where: {
       id: id
     }
-  }).then(() => {
-    res.status(200).json({ success: true, updatedProduct: id });
+  }).then((updatedProduct) => {
+    res.status(200).json({ success: true, updatedProduct: updatedProduct });
   })
 
 })
