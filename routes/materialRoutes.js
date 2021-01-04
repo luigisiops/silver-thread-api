@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
-
-
 router.get("/materials", (req, res) => {
   models.Material.findAll().then((materials) => {
     res.status(200).json(materials);
@@ -48,12 +46,6 @@ router.delete('/delete-material',(req,res) => {
     })
 })
 
-// router.get("/edit-material", (req, res) => {
-//     models.Material.findAll().then((materials) => {
-//       res.status(200).json(materials);
-//   });
-//   });
-
 router.patch('/edit-material', (req,res) => {
     const id = req.body.id
 
@@ -78,7 +70,6 @@ router.patch('/edit-material', (req,res) => {
     }).then(() => {
         res.status(200).json({ success: true, updatedMaterial: id });
     })
-
 })
 
 module.exports = router;
