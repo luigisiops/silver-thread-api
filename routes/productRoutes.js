@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
-
+const functions = require('../functions/functions')
 
 router.get("/products", (req, res) => {
   models.Product.findAll().then((products) => {
@@ -18,7 +18,7 @@ router.post('/products', async (req, res) => {
   const category = req.body.category
   const materialList = req.body.materials
 
-  const wholesale = await calculateWholesaleCosts(labor, materialList)
+  const wholesale = await functions.calculateWholesaleCosts(labor, materialList)
 
   //Building product object:
 
@@ -34,80 +34,17 @@ router.post('/products', async (req, res) => {
     let product_id = savedProduct.dataValues.id
 
     //update materials by product num
-    addToMaterialsByProductNumber(product_id, materialList)
+    functions.addToMaterialsByProductNumber(product_id, materialList)
 
     //return saved product information
     res.status(200).json({ success: true, savedProduct: savedProduct });
   })
 })
 
-//Function to calculate wholesale cost
-const calculateWholesaleCosts = (labor, materialList) => {
-  //Calc labor per minute by diving $25 per hour by 60 minutes
-  let RatePerMinute = (25 / 60)
-
-  let laborCost = (labor * RatePerMinute)
-
-  if (materialList.length >= 1) {
-
-    //get list of extended costs
-    let materialPriceList = materialList.map(item => {
-      return (item.unit_price * item.material_unit_amount)
-    })
-
-    //add all material costs together
-    let totalMaterialCost = materialPriceList.reduce((total, amount) => total + amount)
-
-    //double material costs for pricing & add with labor
-    let costs = ((totalMaterialCost * 2) + laborCost)
-
-    //markup by 10% for utilities - rounded to .00
-    let totalWholesaleCosts = (costs * 1.1).toFixed(2)
-
-    return totalWholesaleCosts
-
-  } else {
-    //client would like a minimum of $3 labor cost for all products
-    if (laborCost <= 3) {
-      let laborMarkup = (3 * 1.1).toFixed(2)
-      return laborMarkup
-    } else {
-      let laborMarkup = (laborCost * 1.1).toFixed(2)
-      return laborMarkup
-    }
-  }
-
-}
-
-
-const addToMaterialsByProductNumber = (id, materials) => {
-
-  //build materials object
-  let addMaterials = materials.map(item => {
-    return {
-      product_id: parseInt(id),
-      ProductId: parseInt(id),
-      material_id: parseInt(item.material_id),
-      MaterialId: parseInt(item.material_id),
-      material_name: item.material_name,
-      material_unit_amount: parseInt(item.material_unit_amount),
-      material_cost: (item.unit_price)
-    }
-  })
-
-  //add all to material by product number table
-  models.MaterialByProdNums.bulkCreate(addMaterials, { returning: false })
-    .then((savedAddMaterials) => {
-      console.log('saved material by product')
-    })
-
-}
-
-
 router.delete('/delete-product', async (req, res) => {
   const id = req.body.id
 
-  await deleteMaterialByProductNum(id)
+  await functions.deleteMaterialByProductNum(id)
 
   await models.Product.destroy({
     where: {
@@ -119,58 +56,6 @@ router.delete('/delete-product', async (req, res) => {
     res.status(500).json({ success: false, message: 'error deleting product' })
   })
 })
-
-const deleteMaterialByProductNum = async (id) => {
-  let product_id = id
-
-  await models.MaterialByProdNums.destroy({
-    where: {
-      product_id: product_id
-    }
-  }).then(() => {
-    return true
-  }).catch(() => {
-    return false
-  })
-
-}
-
-//fix calcWholesale and use that function
-const updateWholesaleCost = (labor, materialList) => {
-  //Calc labor per minute by diving $25 per hour by 60 minutes
-  let RatePerMinute = (25 / 60)
-
-  let laborCost = (labor * RatePerMinute)
-
-  if (materialList.length >= 1) {
-
-    //get list of extended costs
-    let materialPriceList = materialList.map(item => {
-      return (item.material_cost * item.material_unit_amount)
-    })
-
-    //add all material costs together
-    let totalMaterialCost = materialPriceList.reduce((total, amount) => total + amount)
-
-    //double material costs for pricing & add with labor
-    let costs = ((totalMaterialCost * 2) + laborCost)
-
-    //markup by 10% for utilities - rounded to .00
-    let totalWholesaleCosts = (costs * 1.1).toFixed(2)
-
-    return totalWholesaleCosts
-
-  } else {
-    //client would like a minimum of $3 labor cost for all products
-    if (laborCost <= 3) {
-      let laborMarkup = (3 * 1.1).toFixed(2)
-      return laborMarkup
-    } else {
-      let laborMarkup = (laborCost * 1.1).toFixed(2)
-      return laborMarkup
-    }
-  }
-}
 
 router.patch('/update-wholesale', async (req, res) => {
   const id = req.body.id
@@ -184,7 +69,7 @@ router.patch('/update-wholesale', async (req, res) => {
   const category = req.body.category
   const quantity_painted_tree = req.body.quantity_painted_tree
 
- const wholesale = await updateWholesaleCost(labor, materialList)
+ const wholesale = await functions.updateWholesaleCost(labor, materialList)
   console.log(wholesale)
 
   await models.Product.update({
@@ -232,8 +117,8 @@ router.patch('/edit-product', async (req, res) => {
     where: {
       id: id
     }
-  }).then(() => {
-    res.status(200).json({ success: true, updatedProduct: id });
+  }).then((updatedProduct) => {
+    res.status(200).json({ success: true, updatedProduct: updatedProduct });
   })
 
 })

@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
-
-
+const functions = require('../functions/functions')
 
 router.get("/materials", (req, res) => {
-  models.Material.findAll().then((materials) => {
-    res.status(200).json(materials);
-});
+    models.Material.findAll().then((materials) => {
+        res.status(200).json(materials);
+    });
 });
 
-router.post('/materials', (req,res) => {
+router.post('/materials', (req, res) => {
 
     const material_name = req.body.material_name
     const vendor = req.body.vendor
@@ -18,43 +17,42 @@ router.post('/materials', (req,res) => {
     const unit = req.body.unit
     const unit_price = req.body.unit_price
     const category = req.body.category
-    
+
     //Building material object:
-    
-    let material = models.Material.build ({
+
+    let material = models.Material.build({
         material_name: material_name,
         vendor: vendor,
         vendor_material_id: vendor_material_id,
         unit: unit,
         unit_price: unit_price,
-        category: category    
+        category: category
     })
     // Saving material object to the Material Database
-    material.save().then((savedMaterial) => {              
+    material.save().then((savedMaterial) => {
         res.status(200).json(savedMaterial);
+    }).catch(() => {
+        res.status(500).json({success: false});
     })
 })
 
-router.delete('/delete-material',(req,res) => {
+router.delete('/delete-material', async (req, res) => {
     const id = req.body.id
-    console.log(id)
 
-    models.Material.destroy ({
+    await functions.deleteMaterialFromProducts(id)
+
+    models.Material.destroy({
         where: {
             id: id
         }
     }).then(() => {
         res.status(200).json({ success: true, deletedMaterial: id });
+    }).catch(() => {
+        res.status(500).json({ success: false, deletedMaterial: id });
     })
 })
 
-// router.get("/edit-material", (req, res) => {
-//     models.Material.findAll().then((materials) => {
-//       res.status(200).json(materials);
-//   });
-//   });
-
-router.patch('/edit-material', (req,res) => {
+router.patch('/edit-material', (req, res) => {
     const id = req.body.id
 
     const material_name = req.body.material_name
@@ -70,15 +68,16 @@ router.patch('/edit-material', (req,res) => {
         vendor_material_id: vendor_material_id,
         unit: unit,
         unit_price: unit_price,
-        category: category 
+        category: category
     }, {
         where: {
             id: id
         }
     }).then(() => {
         res.status(200).json({ success: true, updatedMaterial: id });
+    }).catch(() => {
+        res.status(500).json({ success: false, updatedMaterial: id });
     })
-
 })
 
 module.exports = router;
