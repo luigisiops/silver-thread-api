@@ -21,6 +21,7 @@ const addToMaterialsByProductNumber = (id, materials) => {
         })
 }
 
+//when deleting a product this will remove the associated materials from the material by product number table
 const deleteMaterialByProductNum = async (id) => {
     let product_id = id
 
@@ -35,12 +36,27 @@ const deleteMaterialByProductNum = async (id) => {
     })
 }
 
+//when deleting materials this will remove the material from the material by product number table
+const deleteMaterialFromProducts = async (id) => {
+    let material_id = id
+
+    await models.MaterialByProdNums.destroy({
+        where: {
+            material_id: material_id
+        }
+    }).then(() => {
+        return true
+    }).catch(() => {
+        return false
+    })
+}
+
 const calculateWholesaleCosts = (labor, materialList) => {
     //Calc labor per minute by diving $25 per hour by 60 minutes
     let RatePerMinute = (25 / 60)
 
     let laborCost = (labor * RatePerMinute)
-
+ 
     if (materialList.length >= 1) {
 
         //get list of extended costs
@@ -60,7 +76,7 @@ const calculateWholesaleCosts = (labor, materialList) => {
         return totalWholesaleCosts
 
     } else {
-        //client would like a minimum of $3 labor cost for all products
+        //client would like a minimum of $3 cost for all products
         if (laborCost <= 3) {
             let laborMarkup = (3 * 1.1).toFixed(2)
             return laborMarkup
@@ -96,7 +112,7 @@ const updateWholesaleCost = (labor, materialList) => {
         return totalWholesaleCosts
 
     } else {
-        //client would like a minimum of $3 labor cost for all products
+        //client would like a minimum of $3 cost for all products
         if (laborCost <= 3) {
             let laborMarkup = (3 * 1.1).toFixed(2)
             return laborMarkup
@@ -107,4 +123,4 @@ const updateWholesaleCost = (labor, materialList) => {
     }
 }
 
-module.exports = { addToMaterialsByProductNumber, calculateWholesaleCosts, updateWholesaleCost, deleteMaterialByProductNum }  
+module.exports = { addToMaterialsByProductNumber, calculateWholesaleCosts, updateWholesaleCost, deleteMaterialByProductNum, deleteMaterialFromProducts }  
