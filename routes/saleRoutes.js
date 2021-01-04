@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const models = require("../models")
-const { Op } = require('sequelize')
+const { Op } = require("sequelize")
 
 // get all sales
 router.get("/getAllSales/:start/:end", async (req, res) => {
@@ -11,16 +11,15 @@ router.get("/getAllSales/:start/:end", async (req, res) => {
    let sales = await models.Sale.findAll({
       where: {
          date_sold: {
-            [Op.between]: [start, end]
-         }
-      }
+            [Op.between]: [start, end],
+         },
+      },
    })
    res.send(sales)
 })
 
 // add new sale
 router.post("/addNewSale", async (req, res) => {
-   
    await models.Sale.create({
       product_id: req.body.product_id,
       product_number: req.body.product_number,
@@ -30,7 +29,10 @@ router.post("/addNewSale", async (req, res) => {
       quantity: req.body.quantity,
       total_price: req.body.total_price,
       sold_to: req.body.sold_to,
-      date_sold: req.body.date_sold
+      date_sold: req.body.date_sold,
+      discount: req.body.discount,
+      tax: req.body.tax,
+      shipping: req.body.shipping,
    })
 
    res.send("new sale added")
@@ -47,6 +49,10 @@ router.put("/:id/updateASale", async (req, res) => {
    const quantity = req.body.quantity
    const total_price = req.body.total_price
    const sold_to = req.body.sold_to
+   const discount = req.body.discount
+   const tax = req.body.tax
+   const shipping = req.body.shipping
+
    console.log(id)
    await models.Sale.update(
       {
@@ -58,6 +64,9 @@ router.put("/:id/updateASale", async (req, res) => {
          quantity: quantity,
          total_price: total_price,
          sold_to: sold_to,
+         discount: discount,
+         tax: tax,
+         shipping: shipping,
       },
       {
          where: {
@@ -74,12 +83,11 @@ router.delete("/:id/deleteASale", (req, res) => {
    const id = req.params.id
    models.Sale.destroy({
       where: {
-         id: id
+         id: id,
       },
    }).then(() => {
-      res.status(200).json({ success: true, updatedSale: id, })
+      res.status(200).json({ success: true, updatedSale: id })
    })
-
 })
 
 module.exports = router
