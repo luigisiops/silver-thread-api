@@ -32,15 +32,13 @@ router.post("/addNewSale", async (req, res) => {
    let sold_to = req.body.sold_to
    let date_sold = req.body.date_sold
    let tax_rate = req.body.tax
-   let sold_PTM = req.body.sold_PTM
-   let onsite_inv = parseInt(req.body.productDetails.quantity)
-   let PTM_inv = parseInt(req.body.productDetails.quantity_painted_tree)
+   let sold_PTM = req.body.sold_PTM  
 
    let total_price = functions.calculateTotalPrice(quantity, price_per_unit, discount)
    let tax = (total_price * (tax_rate / 100)).toFixed(2)
-   let total_sales = (total_price + tax + shipping)
+   // let total_sales = (total_price + tax + shipping)
 
-   await functions.adjustInventoryAfterSale(product_id, sold_PTM, onsite_inv, PTM_inv, quantity)
+   await functions.adjustInventoryAfterSale(product_id, sold_PTM, quantity)
 
    let sale = await models.Sale.build({
 
@@ -56,7 +54,7 @@ router.post("/addNewSale", async (req, res) => {
       discount: discount,
       tax: tax,
       shipping: shipping,
-      total_sales: total_sales,
+      total_sales: 0,
       sold_PTM: sold_PTM
 
    })

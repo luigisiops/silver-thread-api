@@ -14,7 +14,7 @@ const calculateTotalPrice = (quantity, price_per_unit, discount) => {
 
 const updatePtmInventory = async (inventoryAdj, product_id) => {   
 
-   models.Product.increment(
+   await models.Product.increment(
       'quantity_painted_tree', { by: inventoryAdj, 
           where: { 
              id: product_id
@@ -27,7 +27,7 @@ const updatePtmInventory = async (inventoryAdj, product_id) => {
 
 
 const updateOnsiteInventory = async (inventoryAdj, product_id) => {
-   models.Product.increment(
+   await models.Product.increment(
       'quantity', { by: inventoryAdj, 
           where: { 
              id: product_id
@@ -39,7 +39,7 @@ const updateOnsiteInventory = async (inventoryAdj, product_id) => {
 }
 
 
-const adjustInventoryAfterSale = async (product_id, sold_PTM, onsite_inv, PTM_inv, quantity) => {
+const adjustInventoryAfterSale = async (product_id, sold_PTM, quantity) => {
 
    //need to check for zero or null
    if (sold_PTM) {
