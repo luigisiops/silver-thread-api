@@ -26,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     discount: DataTypes.FLOAT,
     tax: DataTypes.FLOAT,
     shipping: DataTypes.FLOAT,
-    quantity_sold_at_painted_tree: DataTypes.INTEGER,
-    total_sales: DataTypes.FLOAT
+    total_sales: DataTypes.FLOAT,
+    sold_PTM: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Sale',

@@ -67,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
     material_id: DataTypes.INTEGER,
     material_name: DataTypes.STRING,
     material_unit_amount: DataTypes.INTEGER,
-    material_cost: DataTypes.FLOAT
+    material_cost: DataTypes.FLOAT,
+    ProductId: DataTypes.INTEGER,
+    MaterialId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'MaterialByProdNums',
