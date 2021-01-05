@@ -112,6 +112,12 @@ router.put("/:id/updateASale", async (req, res) => {
 // delete a sale
 router.delete("/:id/deleteASale", (req, res) => {
    const id = req.params.id
+   const product_id = req.body.product_id
+   const sold_PTM = req.body.sold_PTM
+   const quantity = req.body.quantity
+
+   functions.adjustInventoryAfterDelete(product_id, sold_PTM, quantity)
+
    models.Sale.destroy({
       where: {
          id: id,
@@ -122,5 +128,8 @@ router.delete("/:id/deleteASale", (req, res) => {
       res.status(500).json({ success: false })
    })
 })
+
+
+
 
 module.exports = router

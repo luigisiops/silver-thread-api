@@ -41,5 +41,32 @@ const adjustInventoryAfterSale = async (product_id, sold_PTM, onsite_inv, PTM_in
     }
  }
 
+ const adjustInventoryAfterDelete = async (product_id, sold_PTM, quantity) => {
 
- module.exports = { calculateTotalPrice, adjustInventoryAfterSale }
+  //get current inventory for product
+  let product = await models.Product.findOne({
+     where: {
+        id: product_id
+     }
+  }).then((foundProduct) => {
+     return foundProduct
+  })
+
+  console.log(product.dataValues)
+
+  if (sold_PTM) {
+
+     let newQuantity = (product.dataValues.quantity_painted_tree + quantity)
+     //call function to update PTM inventory
+
+  } else {
+
+     let newQuantity = (product.dataValues.quantity + quantity)
+     //call function to update Onsite Inventory
+
+  }
+
+
+}
+
+ module.exports = { calculateTotalPrice, adjustInventoryAfterSale, adjustInventoryAfterDelete  }
