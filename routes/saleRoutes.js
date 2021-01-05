@@ -36,7 +36,6 @@ router.post("/addNewSale", async (req, res) => {
    let onsite_inv = parseInt(req.body.productDetails.quantity)
    let PTM_inv = parseInt(req.body.productDetails.quantity_painted_tree)
 
-
    let total_price = functions.calculateTotalPrice(quantity, price_per_unit, discount)
    let tax = (total_price * (tax_rate / 100)).toFixed(2)
    let total_sales = (total_price + tax + shipping)
@@ -57,7 +56,8 @@ router.post("/addNewSale", async (req, res) => {
       discount: discount,
       tax: tax,
       shipping: shipping,
-      total_sales: total_sales
+      total_sales: total_sales,
+      sold_PTM: sold_PTM
 
    })
    // Saving product object to the Product Database
@@ -69,19 +69,28 @@ router.post("/addNewSale", async (req, res) => {
 // update sale
 router.put("/:id/updateASale", async (req, res) => {
    const id = parseInt(req.params.id)
-   const product_id = parseInt(req.body.product_id)
-   const product_number = req.body.product_number
-   const product_name = req.body.product_name
-   const product_category = req.body.product_category
-   const price_per_unit = req.body.price_per_unit
-   const quantity = req.body.quantity
-   const total_price = req.body.total_price
-   const sold_to = req.body.sold_to
-   const discount = req.body.discount
-   const tax = req.body.tax
-   const shipping = req.body.shipping
+   const product_id = parseInt(req.body.updated.product_id)
+   const product_number = req.body.updated.product_number
+   const product_name = req.body.updated.product_name
+   const product_category = req.body.updated.product_category
+   const price_per_unit = req.body.updated.price_per_unit
+   const quantity = parseInt(req.body.updated.quantity)
+   const total_price = req.body.updated.total_price
+   const sold_to = req.body.updated.sold_to
+   const sold_PTM = req.body.updated.sold_PTM
+   const discount = req.body.updated.discount
+   const tax = req.body.updated.tax
+   const shipping = req.body.updated.shipping
+   const date_sold = req.body.updated.date_sold
 
-   //calc
+   const original_quantity = parseInt(req.body.original.quantity)
+   const original_sold_PTM = req.body.original.sold_PTM
+
+   if (quantity != original_quantity || sold_PTM != original_sold_PTM) {
+      functions.adjustInventoryAfterEdit(product_id, quantity, sold_PTM, original_quantity, original_sold_PTM)
+   } else {
+      console.log("no change to inventory")
+   }
 
    await models.Sale.update(
       {
@@ -93,9 +102,11 @@ router.put("/:id/updateASale", async (req, res) => {
          quantity: quantity,
          total_price: total_price,
          sold_to: sold_to,
+         date_sold: date_sold,
          discount: discount,
          tax: tax,
          shipping: shipping,
+         sold_PTM: sold_PTM
       },
       {
          where: {

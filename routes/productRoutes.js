@@ -17,6 +17,8 @@ router.post('/products', async (req, res) => {
   const labor = req.body.labor
   const category = req.body.category
   const materialList = req.body.materials
+  const quantity = 0
+  const quantity_painted_tree = 0
 
   const wholesale = await functions.calculateWholesaleCosts(labor, materialList)
 
@@ -27,7 +29,9 @@ router.post('/products', async (req, res) => {
     product_num: product_num,
     labor: labor,
     wholesale: wholesale,
-    category: category
+    category: category,
+    quantity: quantity,
+    quantity_painted_tree: quantity_painted_tree
   })
   // Saving product object to the Product Database
   product.save().then((savedProduct) => {
