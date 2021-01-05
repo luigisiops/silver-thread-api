@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const models = require("../models")
 const { Op } = require("sequelize")
+const functions = require('../functions/salesFunctions')
 
 // get all sales
 router.get("/getAllSales/:start/:end", async (req, res) => {
@@ -31,12 +32,16 @@ router.post("/addNewSale", async (req, res) => {
    let sold_to = req.body.sold_to
    let date_sold = req.body.date_sold
    let tax_rate = req.body.tax
+   let sold_PTM = req.body.sold_PTM
+   let onsite_inv = parseInt(req.body.productDetails.quantity)
+   let PTM_inv = parseInt(req.body.productDetails.quantity_painted_tree)
 
-   let total_price = calculateTotalPrice(quantity, price_per_unit, discount)
- 
+
+   let total_price = functions.calculateTotalPrice(quantity, price_per_unit, discount)
    let tax = (total_price * (tax_rate / 100)).toFixed(2)
-
    let total_sales = (total_price + tax + shipping)
+
+   await functions.adjustInventoryAfterSale(product_id, sold_PTM, onsite_inv, PTM_inv, quantity)
 
    let sale = await models.Sale.build({
 
@@ -57,23 +62,9 @@ router.post("/addNewSale", async (req, res) => {
    })
    // Saving product object to the Product Database
    sale.save().then((savedProduct) => {
-
-      //return saved product information
       res.status(200).json({ success: true, savedProduct: savedProduct });
    })
 })
-
-const calculateTotalPrice = (quantity, price_per_unit, discount) => {
-   console.log('calc total price')
-
-   if (discount > 0) {
-      let total_price = (quantity * price_per_unit * (1 - (discount / 100))).toFixed(2)
-      return total_price
-   } else {
-      let total_price = (quantity * price_per_unit).toFixed(2)
-      return total_price
-   }
-}
 
 // update sale
 router.put("/:id/updateASale", async (req, res) => {

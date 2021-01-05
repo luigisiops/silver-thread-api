@@ -123,4 +123,5 @@ const updateWholesaleCost = (labor, materialList) => {
     }
 }
 
+
 module.exports = { addToMaterialsByProductNumber, calculateWholesaleCosts, updateWholesaleCost, deleteMaterialByProductNum, deleteMaterialFromProducts }  
