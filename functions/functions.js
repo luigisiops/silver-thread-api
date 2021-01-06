@@ -13,7 +13,7 @@ const addToMaterialsByProductNumber = (id, materials) => {
             material_unit_amount: parseInt(item.material_unit_amount),
             material_cost: (item.unit_price)
         }
-    })   
+    })
     //add all to material by product number table
     models.MaterialByProdNums.bulkCreate(addMaterials, { returning: false })
         .then((savedAddMaterials) => {
@@ -51,12 +51,28 @@ const deleteMaterialFromProducts = async (id) => {
     })
 }
 
-const calculateWholesaleCosts = (labor, materialList) => {
+//this will calculate the labor portion of the wholesale cost
+const calculateLaborCost = (labor) => {
+
     //Calc labor per minute by diving $25 per hour by 60 minutes
     let RatePerMinute = (25 / 60)
 
     let laborCost = (labor * RatePerMinute)
- 
+
+    //client would like a minimum of $3 cost for all products
+    if (laborCost <= 3) {
+        let laborMin = (3)
+        return laborMin
+    } else {
+        return laborCost
+    }
+
+}
+
+const calculateWholesaleCosts = (labor, materialList) => {
+
+    let laborCost = calculateLaborCost(labor)
+
     if (materialList.length >= 1) {
 
         //get list of extended costs
@@ -76,23 +92,16 @@ const calculateWholesaleCosts = (labor, materialList) => {
         return totalWholesaleCosts
 
     } else {
-        //client would like a minimum of $3 cost for all products
-        if (laborCost <= 3) {
-            let laborMarkup = (3 * 1.1).toFixed(2)
-            return laborMarkup
-        } else {
-            let laborMarkup = (laborCost * 1.1).toFixed(2)
-            return laborMarkup
-        }
+        let laborMarkup = (laborCost * 1.1).toFixed(2)
+        return laborMarkup     
     }
 
 }
 
-const updateWholesaleCost = (labor, materialList) => {
-    //Calc labor per minute by diving $25 per hour by 60 minutes
-    let RatePerMinute = (25 / 60)
 
-    let laborCost = (labor * RatePerMinute)
+const updateWholesaleCost = (labor, materialList) => {
+
+    let laborCost = calculateLaborCost(labor)
 
     if (materialList.length >= 1) {
 
@@ -112,14 +121,8 @@ const updateWholesaleCost = (labor, materialList) => {
         return totalWholesaleCosts
 
     } else {
-        //client would like a minimum of $3 cost for all products
-        if (laborCost <= 3) {
-            let laborMarkup = (3 * 1.1).toFixed(2)
-            return laborMarkup
-        } else {
-            let laborMarkup = (laborCost * 1.1).toFixed(2)
-            return laborMarkup
-        }
+        let laborMarkup = (laborCost * 1.1).toFixed(2)
+        return laborMarkup
     }
 }
 

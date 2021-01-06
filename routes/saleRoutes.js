@@ -35,8 +35,7 @@ router.post("/addNewSale", async (req, res) => {
    let sold_PTM = req.body.sold_PTM  
 
    let total_price = functions.calculateTotalPrice(quantity, price_per_unit, discount)
-   let tax = (total_price * (tax_rate / 100)).toFixed(2)
-   // let total_sales = (total_price + tax + shipping)
+   let tax = (total_price * (tax_rate / 100)).toFixed(2)   
 
    await functions.adjustInventoryAfterSale(product_id, sold_PTM, quantity)
 
@@ -137,8 +136,6 @@ router.delete("/:id/deleteASale", (req, res) => {
       res.status(500).json({ success: false })
    })
 })
-
-
 
 
 module.exports = router

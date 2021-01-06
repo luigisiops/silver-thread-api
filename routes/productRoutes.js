@@ -19,11 +19,11 @@ router.post('/products', async (req, res) => {
   const materialList = req.body.materials
   const quantity = 0
   const quantity_painted_tree = 0
+  const retail_price = 0
 
   const wholesale = await functions.calculateWholesaleCosts(labor, materialList)
 
   //Building product object:
-
   let product = models.Product.build({
     product_name: product_name,
     product_num: product_num,
@@ -31,7 +31,8 @@ router.post('/products', async (req, res) => {
     wholesale: wholesale,
     category: category,
     quantity: quantity,
-    quantity_painted_tree: quantity_painted_tree
+    quantity_painted_tree: quantity_painted_tree,
+    retail_price: retail_price
   })
   // Saving product object to the Product Database
   product.save().then((savedProduct) => {
@@ -74,7 +75,6 @@ router.patch('/update-wholesale', async (req, res) => {
   const quantity_painted_tree = req.body.quantity_painted_tree
 
  const wholesale = await functions.updateWholesaleCost(labor, materialList)
-  console.log(wholesale)
 
   await models.Product.update({
     product_name: product_name,
@@ -91,6 +91,8 @@ router.patch('/update-wholesale', async (req, res) => {
     }
   }).then(() => {
     res.status(200).json({ success: true, updatedProduct: wholesale });
+  }).catch(() => {
+    res.status(500).json({ success: false })
   })
 
 })
@@ -123,6 +125,8 @@ router.patch('/edit-product', async (req, res) => {
     }
   }).then((updatedProduct) => {
     res.status(200).json({ success: true, updatedProduct: updatedProduct });
+  }).catch(() => {
+    res.status(500).json({ success: false});
   })
 
 })
@@ -144,7 +148,10 @@ router.get("/edit-product/:id", async (req, res) => {
     }]
   }).then((productListing) => {
     res.status(200).json(productListing);
-  });
+  }).catch(() => {
+    res.status(500).json({ success: false});
+  })
+
 
 });
 
