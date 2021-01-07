@@ -11,12 +11,18 @@ const jwt = require('jsonwebtoken')
 router.post("/", async (req, res) => {
     let firstname = req.body.firstname
     let lastname = req.body.lastname
+    let email = req.body.email
     let username = req.body.username
     let password = req.body.password
 
     let user = await models.User.findOne({
         where: {
             username: username
+        }
+    })
+    let userEmail = await models.User.findOne({
+        where:{
+            email:email
         }
     })
 
@@ -26,8 +32,8 @@ router.post("/", async (req, res) => {
     }
 
     else {
-        if (user) {
-            res.send(`user: ${username} is taken!`)
+        if (user || userEmail) {
+            res.send(`user: ${username} or email is taken!`)
         }
 
         else {
@@ -37,6 +43,7 @@ router.post("/", async (req, res) => {
             let newUser = await models.User.create({
                 first_name: firstname,
                 last_name: lastname,
+                email: email,
                 username: username,
                 password: hash
         })

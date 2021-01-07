@@ -41,6 +41,9 @@ app.use("/sales", salesRouter)
 const materialByProdNumsRouter = require("./routes/materialByProdNumsRoutes")
 app.use("/materialByProdNums", materialByProdNumsRouter) 
 
+const passwordRouter = require("./routes/passwordRoutes")
+app.use("/password-reset", passwordRouter)
+
 const materialRoutes = require("./routes/materialRoutes")
 const productRoutes = require("./routes/productRoutes")
 app.use("/", materialRoutes)

@@ -19,7 +19,6 @@ router.post("/", async (req, res) => {
             username: username
         }
     })
-    console.log(user.dataValues.password)
     if (user) {
         bcrypt.compare(password, user.dataValues.password, (error, response) => {
             if (response) {
@@ -34,12 +33,12 @@ router.post("/", async (req, res) => {
 
                 res.json({auth: true, token: token, user: user})
             } else {
-                res.send({ auth: false, message: "Wrong user/password combination" })
+                res.send({ auth: false, message: "Wrong user/password combination!" })
             }
     })
 }
         else {
-            res.send({ auth: false, message: "user does not exist" })
+            res.send({ auth: false, message: "User does not exist!" })
         }
     })
 
@@ -56,7 +55,7 @@ const verifyJWT = (req, res, next) => {
             }
             else{
                 req.userId = decoded.id
-
+                req.token = token
                 req.user = await models.User.findOne({
                     where: {
                         id: req.userId
@@ -70,7 +69,9 @@ const verifyJWT = (req, res, next) => {
 
 router.get('/isUserAuth', verifyJWT, (req,res) => {
     let user = req.user
-    res.send({message:"You are authenticated", user:user})
+    let token = req.token
+    console.log("You are authenticated")
+    res.send({auth: true, token: token, user: user})
 })
 
 router.post
