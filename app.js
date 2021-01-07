@@ -6,6 +6,7 @@ const router = express.Router()
 const cors = require("cors")
 // const models = require("./models")
 global.models = require("./models")
+require('dotenv').config()
 
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
