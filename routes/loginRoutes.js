@@ -50,8 +50,9 @@ const verifyJWT = (req, res, next) => {
     }
     else { 
         jwt.verify(token, "jwtSecret", async (err, decoded) => {
-            if(err){
-                res.json({ auth: false, message: "authentication failed"})
+            if(err){    
+                console.log("authentication failed")
+                res.json({ auth: false})
             }
             else{
                 req.userId = decoded.id
