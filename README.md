@@ -19,16 +19,13 @@ One of our team members, Shannel, wanted to make a real world project for her Ca
 ## Challenges we ran into
 This was our first time meeting the "demands" of a client or at least making something for an actual person rather than a hypothetical one. It was always a concern in our minds to make something that is useful for our client.
 
-## What's next for Silverthread Inventory Management 
-At the moment, all the bubbles are part of one network which we designed with Covid-19 in mind. In the future, we would like to have the ability to add networks for other purposes.
-
 ## Tech
 
 Silverthread Inventory Management uses a number of powerful JS libraries and tools:
 
 Client Side:
 ```sh
-* Deployed using Netlify
+* Deployed using Surge
 * React
 * Redux
 * React Router DOM 
@@ -36,11 +33,11 @@ Client Side:
 * Material UI
 * Material Table
 * Victory
-* DevExpress React Chart
 * Date-io
 * d3-scale-chromatic
 * File Saver
 * XLSX
+* JSON Web Token 
 ```
 
 Server Side:
