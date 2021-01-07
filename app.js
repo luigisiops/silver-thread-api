@@ -4,7 +4,8 @@ const app = express()
 const PORT = 8000
 const router = express.Router()
 const cors = require("cors")
-const models = require("./models")
+// const models = require("./models")
+global.models = require("./models")
 
 const cookieParser = require('cookie-parser')
 const session = require('express-session')

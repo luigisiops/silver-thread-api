@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const models = require("../models")
+//const models = require("../models")
 
 router.post('/add-material', (req, res) => {   
    let product_id = req.body.product_id
