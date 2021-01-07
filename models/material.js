@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Material.hasMany(models.MaterialByProdNums, {onDelete: 'cascade', hooks:true})
-      // models.Material.belongsTo(models.Product)
     }
   };
   Material.init({
