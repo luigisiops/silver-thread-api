@@ -23,8 +23,6 @@ router.post("/", async (req, res) => {
         bcrypt.compare(password, user.dataValues.password, (error, response) => {
             if (response) {
                 req.session.user = user;
-                console.log(req.session.user)
-
                 const id = user.id
                 const token = jwt.sign({id}, "jwtSecret", {
                     expiresIn: 300,
@@ -51,7 +49,6 @@ const verifyJWT = (req, res, next) => {
     else { 
         jwt.verify(token, "jwtSecret", async (err, decoded) => {
             if(err){    
-                console.log("authentication failed")
                 res.json({ auth: false})
             }
             else{
@@ -71,7 +68,6 @@ const verifyJWT = (req, res, next) => {
 router.get('/isUserAuth', verifyJWT, (req,res) => {
     let user = req.user
     let token = req.token
-    console.log("You are authenticated")
     res.send({auth: true, token: token, user: user})
 })
 
