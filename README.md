@@ -6,6 +6,8 @@ Silverthread Inventory Management solves the problems of Microsoft Excel. We att
 ## Inspiration
 One of our team members, Shannel, wanted to make a real world project for her Capstone Project at our coding bootcamp. She asked around and heard from a friend that she had once bought inventory management software for her silversmithing business, but did not like using it so she continued to just use Microsoft Excel spreadsheets to log all of her inventory. Our hope is to come up with an app that allows her to do everything she did before but make it so her calculations for pricing are done automatically, her new material inputs affect the pricing of products, display information on better looking and more usuable charts, and display important sales information to her with infographics. She also did not always log her sales, so our hope is that she will be able to take advantage of our app to do so.
 
+![](login.png)
+
 
 ## Features
   - Login/Logout for protecting data and routes
